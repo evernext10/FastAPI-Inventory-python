@@ -16,7 +16,13 @@ class ProductService:
 
     def create(self, product_body: ProductSchema) -> Product:
         return self.productRepository.create(
-            Product(name=product_body.name)
+            Product(
+                name=product_body.name,
+                status=product_body.status,
+                stock=product_body.stock,
+                description=product_body.description,
+                price=product_body.price
+                )
         )
 
     def delete(self, product_id: int) -> None:
