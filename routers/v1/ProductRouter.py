@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
+from fastapi_cache.decorator import cache
 
 from schemas.pydantic.ProductSchema import (
     ProductPostRequestSchema,
@@ -15,6 +16,7 @@ ProductRouter = APIRouter(
 
 
 @ProductRouter.get("/", response_model=List[ProductSchema])
+#@cache(expire=300)
 def index(
     name: Optional[str] = None,
     pageSize: Optional[int] = 100,
@@ -30,6 +32,7 @@ def index(
 
 
 @ProductRouter.get("/{id}", response_model=ProductSchema)
+#@cache(expire=300)
 def get(id: int, productService: ProductService = Depends()):
     return productService.get(id).normalize()
 

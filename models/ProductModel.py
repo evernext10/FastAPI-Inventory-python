@@ -3,6 +3,7 @@ from sqlalchemy import (
     Integer,
     PrimaryKeyConstraint,
     String,
+    Float
 )
 
 from models.BaseModel import EntityMeta
@@ -16,7 +17,9 @@ class Product(EntityMeta):
     status = Column(Integer, nullable=False)
     stock = Column(Integer, nullable=False)
     description = Column(String(256), nullable=False)
-    price = Column(Integer, nullable=False)
+    price = Column(Float, nullable=False)
+    discount = Column(Float, nullable=True)
+    final_price = Column(Float, nullable=True)
 
     PrimaryKeyConstraint(id)
 
@@ -28,4 +31,6 @@ class Product(EntityMeta):
             "stock": self.stock.__str__(),
             "description": self.description.__str__(),
             "price": self.price.__str__(),
+            "discount": self.discount.__str__(),
+            "final_price": self.final_price.__str__(),
         }

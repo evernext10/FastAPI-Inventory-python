@@ -6,7 +6,9 @@ class ProductPostRequestSchema(BaseModel):
     status: int
     stock: int
     description: str
-    price: int
+    price: float
+    discount: float
+    final_price: float
 
 
 class ProductSchema(ProductPostRequestSchema):

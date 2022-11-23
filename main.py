@@ -17,6 +17,9 @@ from starlette.responses import PlainTextResponse
 from timing_asgi import TimingMiddleware, TimingClient
 from timing_asgi.integrations import StarletteScopeToName
 
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
+from fastapi_cache.decorator import cache
 
 class PrintTimings(TimingClient):
     def timing(self, metric_name, timing, tags):
@@ -69,6 +72,9 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
+""" @app.on_event("startup")
+async def startup():
+    FastAPICache.init(InMemoryBackend()) """
 
 if __name__ == "__main__":
     uvicorn.run(timing)

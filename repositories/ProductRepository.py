@@ -1,4 +1,5 @@
 from typing import List, Optional
+import numpy as np
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
@@ -10,6 +11,8 @@ from models.ProductModel import Product
 
 class ProductRepository:
     db: Session
+
+    arrayDiscounts : List[int] = [10, 20, 30, 40, 50, 20, 40]
 
     def __init__(
         self, db: Session = Depends(get_db_connection)
@@ -27,7 +30,14 @@ class ProductRepository:
         if name:
             query = query.filter_by(name=name)
 
-        return query.offset(start).limit(limit).all()
+        products : List[Product] = query.offset(start).limit(limit).all()
+        """ if products:
+            for product in products:
+                discount = np.random.choice(self.arrayDiscounts, size=1)
+                product.discount = (product.price * discount) / 100
+                product.final_price = product.price - product.discount """
+
+        return products
 
     def get(self, product: Product) -> Product:
         return self.db.get(
