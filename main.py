@@ -12,3 +12,6 @@ app = FastAPI(
     title=env.APP_NAME,
     version=env.API_VERSION
 )
+
+# Initialise Data Model Attributes
+#init()
