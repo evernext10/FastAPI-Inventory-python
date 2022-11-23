@@ -1,15 +1,20 @@
 from typing import List, Optional
-
+import numpy as np
 from fastapi import Depends
 from sqlalchemy.orm import Session
+
+import logging
 
 from configs.database import (
     get_db_connection,
 )
 from models.ProductModel import Product
 
+logger = logging.getLogger(__name__)
+
 class ProductRepository:
     db: Session
+    arrayDiscounts : List[int] = [0, 10, 20, 30, 40, 50, 20, 40]
 
     def __init__(
         self, db: Session = Depends(get_db_connection)
@@ -27,7 +32,15 @@ class ProductRepository:
         if name:
             query = query.filter_by(name=name)
 
-        return query.offset(start).limit(limit).all()
+        products : List[Product] = query.offset(start).limit(limit).all()
+        if products:
+            for product in products:
+                discount = np.random.choice(self.arrayDiscounts, size=1)
+                product.discount = float((product.price * discount) / 100)
+                product.final_price = float(product.price - product.discount)
+                logger.info(product.normalize())
+                
+        return products
 
     def get(self, product: Product) -> Product:
         return self.db.get(
