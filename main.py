@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI
 from strawberry import Schema
 
 from configs.environment import get_environment_variables
-
+from models.BaseModel import init
 
 # Application Environment Configuration
 env = get_environment_variables()
@@ -14,4 +14,4 @@ app = FastAPI(
 )
 
 # Initialise Data Model Attributes
-#init()
+init()
